@@ -19,7 +19,7 @@ export function isAdmin(ctx: SessionCtx): boolean {
 
 // MECHANICAL: parseInt without radix — single-line suggestable fix.
 export function parseUserId(raw: string): number {
-  return parseInt(raw);
+  return parseInt(raw, 10);
 }
 
 // MECHANICAL: crypto.createHash("sha256") for token fingerprint — swap to sha256.
