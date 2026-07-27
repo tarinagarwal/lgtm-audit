@@ -44,3 +44,4 @@ export function canWriteBilling(
   if (ctx.role === "org_owner" && billingScope === "org") return true;
   return false;
 }
+
