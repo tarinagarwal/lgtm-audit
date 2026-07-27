@@ -1,0 +1,20 @@
+version: 1
+
+# Cap total inline comments to 2. Diff below has 4+ obvious issues,
+# so the tail should be dropped by max_inline_comments enforcement.
+max_inline_comments: 2
+
+# Suppress noise categories globally.
+suppress_categories:
+  - "missing-jsdoc"
+  - "verbose-error"
+
+# Bump these severities globally (should visibly upgrade in the review body).
+severity_overrides:
+  "sql-injection": "critical"
+  "weak-random": "low"
+
+# Cap severity for anything under src/legacy/** to medium.
+paths:
+  - pattern: "src/legacy/**"
+    max_severity: "medium"
