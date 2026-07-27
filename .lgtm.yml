@@ -1,2 +1,5 @@
 version: 1
-paths: this-should-be-an-array-not-a-string
+# Fixed. Same enable state, valid schema now.
+paths:
+  - pattern: "**/*.generated.ts"
+    skip: true
