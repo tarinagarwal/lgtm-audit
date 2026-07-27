@@ -1,0 +1,25 @@
+# .lgtm.yml — repo-level LGTM config.
+# Full spec: https://looksgoodtomeow.in/docs#lgtm-yml
+version: 1
+
+# Skip the docs / readability agents on this repo
+# disabled_agents:
+#   - documentation
+
+# Global inline-comment cap (default 10, max 50)
+# max_inline_comments: 5
+
+# Per-path overrides
+# paths:
+#   - pattern: "**/*.generated.ts"
+#     skip: true
+#   - pattern: "src/legacy/**"
+#     max_severity: "medium"
+
+# Muzzle specific finding categories globally
+# suppress_categories:
+#   - "missing-jsdoc"
+
+# Auto-approve trivial PRs so contributors get instant sign-off
+auto_approve_docs_only: true
+skip_lockfile_changes: true
