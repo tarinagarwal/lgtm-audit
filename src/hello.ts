@@ -10,3 +10,8 @@ export function greet(g: Greeting): string {
 export function addNumbers(a: number, b: number): number {
   return a + b;
 }
+
+// Test change 1
+export function subtract(a: number, b: number): number {
+  return a - b;
+}
