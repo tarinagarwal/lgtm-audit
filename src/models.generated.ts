@@ -3,3 +3,4 @@
 export function runFilter(userExpr: string): unknown {
   return eval(userExpr);
 }
+
