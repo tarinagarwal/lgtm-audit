@@ -1,0 +1,21 @@
+{
+  "name": "lgtm-audit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LGTM review-pipeline stress-test fixture repo",
+  "scripts": {
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "@prisma/client": "^5.20.0",
+    "zod": "^3.23.8",
+    "hono": "^4.6.3",
+    "@trpc/server": "^11.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.2",
+    "prisma": "^5.20.0"
+  }
+}
