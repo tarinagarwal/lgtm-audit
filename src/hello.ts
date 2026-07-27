@@ -15,3 +15,8 @@ export function addNumbers(a: number, b: number): number {
 export function subtract(a: number, b: number): number {
   return a - b;
 }
+
+// Fresh push after webhook URL fix
+export function multiply(a: number, b: number): number {
+  return a * b;
+}
