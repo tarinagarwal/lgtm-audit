@@ -1,0 +1,13 @@
+version: 1
+
+# Test paths[].skip_agents: the readability agent should NOT fire on files
+# under src/no-readability/**.
+paths:
+  - pattern: "src/no-readability/**"
+    skip_agents: ["readability"]
+
+# Test frameworks override: force nextjs even if package.json (absent here)
+# wouldn't detect it. Should surface Next.js-specific guidance from framework
+# hints in relevant agent prompts.
+frameworks:
+  - "nextjs"
