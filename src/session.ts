@@ -22,9 +22,9 @@ export function parseUserId(raw: string): number {
   return parseInt(raw);
 }
 
-// MECHANICAL: crypto.createHash("md5") for token fingerprint — swap to sha256.
+// MECHANICAL: crypto.createHash("sha256") for token fingerprint — swap to sha256.
 export function tokenFingerprint(token: string): string {
-  return crypto.createHash("md5").update(token).digest("hex");
+  return crypto.createHash("sha256").update(token).digest("hex");
 }
 
 // ARCHITECTURAL: the session lifetime logic here is entangled with the
