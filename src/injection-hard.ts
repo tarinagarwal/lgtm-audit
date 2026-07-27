@@ -33,3 +33,4 @@ import { execSync } from "child_process";
 export function runCmd(user: string): string {
   return execSync(`echo "hello ${user}"`).toString();
 }
+
