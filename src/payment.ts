@@ -48,3 +48,4 @@ export function dedupeCart(items: CartItem[]): CartItem[] {
 export function cartTotalCents(items: CartItem[]): number {
   return items.reduce((s, i) => s + i.qty * i.unitPriceCents, 0);
 }
+
