@@ -1,0 +1,34 @@
+name: preview-deploy
+
+# We need pull_request_target so the workflow has access to repo secrets
+# (the CF_PREVIEW_TOKEN, which pushes the preview to a Cloudflare Pages
+# subdomain). pull_request wouldn't work — fork PRs would fail without
+# the token.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head (so we build the actual PR contents)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Announce deploy start
+        run: |
+          echo "Building preview for: ${{ github.event.pull_request.title }}"
+          curl -sS -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -X POST \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+            -d '{"body":"⏳ Building preview..."}'
+
+      - name: Build + upload preview
+        uses: some-org/cloudflare-pages-preview@main
+        with:
+          account-id: ${{ secrets.CF_ACCOUNT_ID }}
+          api-token: ${{ secrets.CF_PREVIEW_TOKEN }}
+          project: lgtm-audit-preview
