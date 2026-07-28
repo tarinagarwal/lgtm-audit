@@ -1,0 +1,11 @@
+name: pr-scoped-bad
+on:
+  pull_request:
+    types: [opened, synchronize]
+jobs:
+  bad:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4       # unpinned action
+      - run: |
+          echo "AWS_KEY=AKIAIOSFODNN7EXAMPLE" > .env   # hardcoded secret
